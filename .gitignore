@@ -1,1 +1,3 @@
 graphql-node-api/
+dist
+node_modules/
