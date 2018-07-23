@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "gulp": "gulp",
-    "dev": "nodemon dist/"
+    "dev": "nodemon dist/app"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/angelomedeiros/curso-graphql-nodejs#readme",
   "devDependencies": {
-    "@types/node": "^10.5.2",
+    "@types/express": "4.0.37",
+    "@types/node": "8.0.34",
     "gulp": "3.9.1",
     "gulp-clean": "0.3.2",
     "gulp-livereload": "3.8.1",
@@ -27,5 +28,8 @@
     "gulp-typescript": "3.2.2",
     "nodemon": "1.12.0",
     "typescript": "2.5.3"
+  },
+  "dependencies": {
+    "express": "4.16.2"
   }
 }

@@ -9,11 +9,11 @@ const tsProject = ts.createProject('tsconfig.json')
 let initServer = () => {
   livereload.listen()
   nodemon({
-    script: 'dist/index.js',
+    script: 'dist/',
     ext: 'js'
   })
   .on('restart', () => {
-    gulp.src('dist/index.js')
+    gulp.src('dist/')
       .pipe(livereload())
   })
 }
