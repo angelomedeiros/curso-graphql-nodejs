@@ -13,9 +13,13 @@ class App {
 
     private middleware() {
         this.express.use('/', graphqlHTTP({
-            schema
+            schema,
+            graphiql: process.env.NODE_ENV === 'development'
         }))
     }
+
 }
+
+console.log(process.env.NODE_ENV)
 
 export default new App().express;

@@ -7,6 +7,7 @@ const livereload   = require('gulp-livereload')
 const tsProject = ts.createProject('tsconfig.json')
 
 let initServer = () => {
+  process.env.NODE_ENV = 'development'
   livereload.listen()
   nodemon({
     script: 'dist/',
