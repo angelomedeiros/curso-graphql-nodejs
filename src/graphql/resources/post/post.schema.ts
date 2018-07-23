@@ -9,7 +9,7 @@ const postTypes = `
         createdAt: String!
         updatedAt: String!
         author: User!
-        comments: [ Comments! ]!
+        comments: [ Comment! ]!
     }
 
     input PostInput {
