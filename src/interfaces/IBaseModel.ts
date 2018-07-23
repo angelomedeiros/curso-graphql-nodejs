@@ -1,6 +1,6 @@
-import { IModel } from "./IModel";
+import { IModels } from "./IModels";
 
 export interface IBaseModel {
     prototype?
-    associate?(models: IModel): void
+    associate?(models: IModels): void
 }
