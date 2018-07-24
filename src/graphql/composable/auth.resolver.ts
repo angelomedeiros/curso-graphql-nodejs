@@ -1,6 +1,7 @@
 import { GraphQLFieldResolver } from "graphql";
 import { IResolverContext }     from '../../interfaces/IResolverContext'
 import { ComposableResolver }   from './composable.resolver'
+import { verifyTokenResolver } from "./verifyToken.resolver";
 
 export const authResolver: ComposableResolver<any, IResolverContext> = 
     (resolver: GraphQLFieldResolver<any, IResolverContext>): GraphQLFieldResolver<any, IResolverContext> => {
@@ -16,3 +17,5 @@ export const authResolver: ComposableResolver<any, IResolverContext> =
         }
 
     }
+
+export const authResolvers = [ authResolver, verifyTokenResolver ]
