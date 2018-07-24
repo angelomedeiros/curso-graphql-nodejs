@@ -1,4 +1,6 @@
 import { IDbConnection } from "../../../interfaces/IDbConnection";
+import { Transaction } from "sequelize";
+import { ICommnetInstance } from "../../../models/MComment";
 
 export const commentResolvers = {
 
@@ -21,6 +23,38 @@ export const commentResolvers = {
                          limit: first,
                          offset: offset
                      })
+        }
+    },
+
+    Mutation: {
+        createComment: (parent, { input }, {db}: {db: IDbConnection} , info) => {
+            return db.sequelize.transaction((t: Transaction) => {
+                return db.Comment
+                         .create(input, { transaction: t })
+            })
+        },
+        updateComment: (parent, { id, input }, {db}: {db: IDbConnection} , info) => {
+            id = parseInt(id)
+            return db.sequelize.transaction((t: Transaction) => {
+                return db.Comment
+                         .findById(id)
+                         .then((comment: ICommnetInstance) => {
+                             if (!comment) throw new Error(`Comment with id ${id} not found`)
+                             return comment.update(input, { transaction: t })
+                         })
+            })
+        },
+        deleteComment: (parent, { id }, {db}: {db: IDbConnection} , info) => {
+            id = parseInt(id)
+            return db.sequelize.transaction((t: Transaction) => {
+                return db.Comment
+                         .findById(id)
+                         .then((comment: ICommnetInstance) => {
+                             if (!comment) throw new Error(`Comment with id ${id} not found`)
+                             return comment.destroy({transaction: t})
+                                           .then(comment => !!comment)
+                         })
+            })
         }
     }
 }
