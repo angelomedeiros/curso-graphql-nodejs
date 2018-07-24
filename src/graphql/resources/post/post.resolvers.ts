@@ -1,5 +1,6 @@
 import { IDbConnection } from '../../../interfaces/IDbConnection'
 import { IPostInstance } from '../../../models/MPost'
+import { Transaction } from 'sequelize';
 
 export const postResolvers = {
 
@@ -36,5 +37,38 @@ export const postResolvers = {
                         return post
                      })
         },
+    },
+
+    Mutation: {
+        createPost: (parent, { input }, {db}: {db: IDbConnection}, info) => {
+            return db.sequelize.transaction((t: Transaction) => {
+                return db.Post.create(input, {transaction: t})
+            })
+        },
+
+        updatePost: (parent, { id, input }, {db}: {db: IDbConnection}, info) => {
+            id = parseInt(id)
+            return db.sequelize.transaction((t: Transaction) => {
+                return db.Post
+                         .findById(id)
+                         .then((post: IPostInstance) => {
+                            if (!post) throw new Error(`Post with id ${id} not found!`)
+                            return post.update(input, {transaction: t})
+                         })
+            })
+        },
+
+        deletePost: (parent, { id }, {db}: {db: IDbConnection}, info) => {
+            id = parseInt(id)
+            return db.sequelize.transaction((t: Transaction) => {
+                return db.Post
+                         .findById(id)
+                         .then((post: IPostInstance) => {
+                            if (!post) throw new Error(`Post with id ${id} not found!`)
+                            return post.destroy({transaction: t})
+                                       .then(post => !!post)
+                         })
+            })
+        }
     }
 }
