@@ -34,6 +34,7 @@ export const postResolvers = {
         },
 
         post: (parent, {id}, {db}: {db: IDbConnection}, info) => {
+            id = parseInt(id)
             return db.Post
                      .findById(id)
                      .then((post: IPostInstance) => {

@@ -20,6 +20,7 @@ export const commentResolvers = {
 
     Query: {
         commentsByPost: (parent, { postId, first = 10, offset = 0 }, {db}: {db: IDbConnection} , info) => {
+            postId = parseInt(postId)
             return db.Comment
                      .findAll({
                          where: { post: postId },
