@@ -7,6 +7,7 @@ const tsProject = ts.createProject('tsconfig.json')
 
 let initServer = () => {
   process.env.NODE_ENV = 'development'
+  process.env.JWT_SECRET = 'angelo'
   nodemon({
     script: 'dist/',
     ext: 'js'
