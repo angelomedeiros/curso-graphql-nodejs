@@ -7,7 +7,7 @@ export const authResolver: ComposableResolver<any, IResolverContext> =
         
         return (parent, args, context: IResolverContext, info) => {
 
-            if (context.user || context.authorization) {
+            if (context.authUser || context.authorization) {
                 return resolver(parent, args, context, info)
             }
 
