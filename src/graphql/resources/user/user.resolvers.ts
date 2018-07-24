@@ -1,8 +1,11 @@
 import { GraphQLResolveInfo } from "graphql";
-import { IDbConnection } from '../../../interfaces/IDbConnection'
-import { IUserInstance } from "../../../models/MUser";
-import { Transaction } from "sequelize";
-import { handleError } from "../../../utils/utils";
+import { IDbConnection }      from '../../../interfaces/IDbConnection'
+import { IUserInstance }      from "../../../models/MUser";
+import { Transaction }        from "sequelize";
+import { handleError }        from "../../../utils/utils";
+import { compose }            from "../../composable/composable.resolver";
+import { authResolver }       from "../../composable/auth.resolver";
+import { verifyTokenResolver } from "../../composable/verifyToken.resolver";
 
 export const userResolvers = {
 
@@ -19,14 +22,14 @@ export const userResolvers = {
     },
 
     Query: {
-        users: (parent, { first = 10, offset = 0 }, { db }: { db: IDbConnection }, info: GraphQLResolveInfo) => {
+        users: compose(authResolver, verifyTokenResolver)((parent, { first = 10, offset = 0 }, { db }: { db: IDbConnection }, info: GraphQLResolveInfo) => {
             return db.User
                      .findAll({
                          limit: first,
                          offset: offset
                      })
                      .catch(handleError)
-        },
+        }),
 
         user: (parent, { id }, { db }: { db: IDbConnection }, info: GraphQLResolveInfo) => {
             id = parseInt(id)
