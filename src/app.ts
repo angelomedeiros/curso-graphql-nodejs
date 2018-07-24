@@ -1,6 +1,7 @@
 import * as express from 'express'
 import * as graphqlHTTP from 'express-graphql'
 import db from './models'
+import { extractJwtMiddleware } from './middlewares/extractJwtMiddleware'
 
 import schema from './graphql/schema'
 
@@ -16,8 +17,9 @@ class App {
 
         this.express.use('/',
 
+            extractJwtMiddleware(),
+
             (req, res, next) => {
-                req['context']    = {}
                 req['context'].db = db
                 next()
             },
