@@ -1,6 +1,7 @@
 import { IDbConnection } from "../../../interfaces/IDbConnection";
 import { Transaction } from "sequelize";
 import { ICommnetInstance } from "../../../models/MComment";
+import { handleError } from "../../../utils/utils";
 
 export const commentResolvers = {
 
@@ -8,10 +9,12 @@ export const commentResolvers = {
         user: (comment, args, {db}: {db: IDbConnection} , info) => {
             return db.User
                      .findById(comment.get('user'))
+                     .catch(handleError)
         },
         post: (comment, args, {db}: {db: IDbConnection} , info) => {
             return db.Post
                      .findById(comment.get('post'))
+                     .catch(handleError)
         },
     },
 
@@ -23,6 +26,7 @@ export const commentResolvers = {
                          limit: first,
                          offset: offset
                      })
+                     .catch(handleError)
         }
     },
 
@@ -31,7 +35,7 @@ export const commentResolvers = {
             return db.sequelize.transaction((t: Transaction) => {
                 return db.Comment
                          .create(input, { transaction: t })
-            })
+            }).catch(handleError)
         },
         updateComment: (parent, { id, input }, {db}: {db: IDbConnection} , info) => {
             id = parseInt(id)
@@ -42,7 +46,7 @@ export const commentResolvers = {
                              if (!comment) throw new Error(`Comment with id ${id} not found`)
                              return comment.update(input, { transaction: t })
                          })
-            })
+            }).catch(handleError)
         },
         deleteComment: (parent, { id }, {db}: {db: IDbConnection} , info) => {
             id = parseInt(id)
@@ -54,7 +58,7 @@ export const commentResolvers = {
                              return comment.destroy({transaction: t})
                                            .then(comment => !!comment)
                          })
-            })
+            }).catch(handleError)
         }
     }
 }

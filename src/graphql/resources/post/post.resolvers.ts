@@ -1,6 +1,7 @@
 import { IDbConnection } from '../../../interfaces/IDbConnection'
 import { IPostInstance } from '../../../models/MPost'
 import { Transaction } from 'sequelize';
+import { handleError } from '../../../utils/utils';
 
 export const postResolvers = {
 
@@ -8,6 +9,7 @@ export const postResolvers = {
         author: (post, args, {db}: {db: IDbConnection}, info) => {
             return db.User
                      .findById(post.get('author'))
+                     .catch(handleError)
         },
 
         comments: (post, {first = 10, offset = 0}, {db}: {db: IDbConnection}, info) => {
@@ -17,6 +19,7 @@ export const postResolvers = {
                          limit: first,
                          offset: offset
                      })
+                     .catch(handleError)
         }
     },
 
@@ -27,6 +30,7 @@ export const postResolvers = {
                          limit: first,
                          offset: offset
                      })
+                     .catch(handleError)
         },
 
         post: (parent, {id}, {db}: {db: IDbConnection}, info) => {
@@ -36,6 +40,7 @@ export const postResolvers = {
                         if (!post) throw new Error(`Post with id ${id} not found!`)
                         return post
                      })
+                     .catch(handleError)
         },
     },
 
@@ -43,7 +48,7 @@ export const postResolvers = {
         createPost: (parent, { input }, {db}: {db: IDbConnection}, info) => {
             return db.sequelize.transaction((t: Transaction) => {
                 return db.Post.create(input, {transaction: t})
-            })
+            }).catch(handleError)
         },
 
         updatePost: (parent, { id, input }, {db}: {db: IDbConnection}, info) => {
@@ -55,7 +60,7 @@ export const postResolvers = {
                             if (!post) throw new Error(`Post with id ${id} not found!`)
                             return post.update(input, {transaction: t})
                          })
-            })
+            }).catch(handleError)
         },
 
         deletePost: (parent, { id }, {db}: {db: IDbConnection}, info) => {
@@ -68,7 +73,7 @@ export const postResolvers = {
                             return post.destroy({transaction: t})
                                        .then(post => !!post)
                          })
-            })
+            }).catch(handleError)
         }
     }
 }
