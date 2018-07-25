@@ -14,7 +14,6 @@ export const userResolvers = {
 
     User: {
         posts: (user: IUserInstance, { first = 10, offset = 0 }, { db, requestedFields }: { db: IDbConnection, requestedFields: RequestedFields }, info: GraphQLResolveInfo) => {
-            console.log(info.fieldName, info.fieldNodes)
             return db.Post
                     .findAll({
                         where: {author: user.get('id')},
@@ -32,7 +31,7 @@ export const userResolvers = {
                      .findAll({
                          limit: first,
                          offset: offset,
-                         attributes: requestedFields.getFields(info, { keep: ['id'], exclude: ['comments'] })
+                         attributes: requestedFields.getFields(info, { keep: ['id'], exclude: ['posts'] })
                      })
                      .catch(handleError)
         },
@@ -40,7 +39,7 @@ export const userResolvers = {
         user: (parent, { id }, context: IResolverContext, info: GraphQLResolveInfo) => {
             id = parseInt(id)
             return context.db.User.findById(id, {
-                               attributes: context.requestedFields.getFields(info, { keep: ['id'], exclude: ['comments'] })
+                               attributes: context.requestedFields.getFields(info, { keep: ['id'], exclude: ['posts'] })
                           })
                           .then((user: IUserInstance) => {
                               throwError(!user, `User with id ${id} not found`)
@@ -52,7 +51,7 @@ export const userResolvers = {
         currentUser: compose(...authResolvers)((parent, args, context: IResolverContext, info: GraphQLResolveInfo) => {
             return context.db.User
                     .findById(context.authUser.id, {
-                        attributes: context.requestedFields.getFields(info, { keep: ['id'], exclude: ['comments'] })
+                        attributes: context.requestedFields.getFields(info, { keep: ['id'], exclude: ['posts'] })
                     })
                     .then((user: IUserInstance) => {
                         throwError(!user, `User with id ${context.authUser.id} not found`)

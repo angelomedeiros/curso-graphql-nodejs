@@ -15,7 +15,7 @@ export const postResolvers = {
     Post: {
         author: (post, args, {db, dataloaders: { userLoader }}: {db: IDbConnection, dataloaders: IDataLoaders}, info) => {
             return userLoader
-                        .load(post.get('author'))
+                        .load({key: post.get('author'), info})
                         .catch(handleError)
         },
 

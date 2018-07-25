@@ -13,12 +13,12 @@ export const commentResolvers = {
     Comment: {
         user: (comment, args, {db, dataloaders: { userLoader }}: {db: IDbConnection, dataloaders: IDataLoaders}, info) => {
             return userLoader
-                        .load(comment.get('author'))
+                        .load({key: comment.get('user'), info})
                         .catch(handleError)
         },
         post: (comment, args, {db, dataloaders: { postLoader }}: {db: IDbConnection, dataloaders: IDataLoaders}, info) => {
             return postLoader
-                        .load(comment.get('post'))
+                        .load({key: comment.get('post'), info})
                         .catch(handleError)
         },
     },
