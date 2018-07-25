@@ -5,19 +5,20 @@ import { handleError, throwError } from "../../../utils/utils";
 import { compose } from "../../composable/composable.resolver";
 import { authResolvers } from "../../composable/auth.resolver";
 import { IAuthUser } from "../../../interfaces/IAuthUser";
+import { IDataLoaders } from "../../../interfaces/IDataLoaders";
 
 export const commentResolvers = {
 
     Comment: {
-        user: (comment, args, {db}: {db: IDbConnection} , info) => {
-            return db.User
-                     .findById(comment.get('user'))
-                     .catch(handleError)
+        user: (comment, args, {db, dataloaders: { userLoader }}: {db: IDbConnection, dataloaders: IDataLoaders}, info) => {
+            return userLoader
+                        .load(comment.get('author'))
+                        .catch(handleError)
         },
-        post: (comment, args, {db}: {db: IDbConnection} , info) => {
-            return db.Post
-                     .findById(comment.get('post'))
-                     .catch(handleError)
+        post: (comment, args, {db, dataloaders: { postLoader }}: {db: IDbConnection, dataloaders: IDataLoaders}, info) => {
+            return postLoader
+                        .load(comment.get('post'))
+                        .catch(handleError)
         },
     },
 

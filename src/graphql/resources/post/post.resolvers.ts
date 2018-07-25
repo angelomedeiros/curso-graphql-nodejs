@@ -5,14 +5,18 @@ import { handleError, throwError } from '../../../utils/utils';
 import { compose } from '../../composable/composable.resolver';
 import { authResolvers } from '../../composable/auth.resolver';
 import { IAuthUser } from '../../../interfaces/IAuthUser';
+import { IDataLoaders } from '../../../interfaces/IDataLoaders';
 
 export const postResolvers = {
 
     Post: {
-        author: (post, args, {db}: {db: IDbConnection}, info) => {
-            return db.User
-                     .findById(post.get('author'))
-                     .catch(handleError)
+        author: (post, args, {db, dataloaders: { userLoader }}: {db: IDbConnection, dataloaders: IDataLoaders}, info) => {
+            return userLoader
+                        .load(post.get('author'))
+                        .catch(handleError)
+            // return db.User
+            //          .findById(post.get('author'))
+            //          .catch(handleError)
         },
 
         comments: (post, {first = 10, offset = 0}, {db}: {db: IDbConnection}, info) => {
