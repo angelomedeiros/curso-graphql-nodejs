@@ -19,7 +19,6 @@
   "homepage": "https://github.com/angelomedeiros/curso-graphql-nodejs#readme",
   "devDependencies": {
     "@types/bcryptjs": "2.4.1",
-    "@types/bluebird": "^3.5.5",
     "@types/express": "4.0.37",
     "@types/express-graphql": "0.0.34",
     "@types/graphql": "0.11.5",
@@ -37,9 +36,11 @@
   },
   "dependencies": {
     "bcryptjs": "2.4.3",
+    "dataloader": "1.3.0",
     "express": "4.16.2",
     "express-graphql": "0.6.11",
     "graphql": "0.11.7",
+    "graphql-fields": "1.0.2",
     "graphql-tools": "2.3.0",
     "jsonwebtoken": "8.1.0",
     "lodash": "4.17.4",
