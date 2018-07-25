@@ -6,6 +6,7 @@ import { compose } from "../../composable/composable.resolver";
 import { authResolvers } from "../../composable/auth.resolver";
 import { IAuthUser } from "../../../interfaces/IAuthUser";
 import { IDataLoaders } from "../../../interfaces/IDataLoaders";
+import { IResolverContext } from "../../../interfaces/IResolverContext";
 
 export const commentResolvers = {
 
@@ -23,13 +24,14 @@ export const commentResolvers = {
     },
 
     Query: {
-        commentsByPost: (parent, { postId, first = 10, offset = 0 }, {db}: {db: IDbConnection} , info) => {
+        commentsByPost: (parent, { postId, first = 10, offset = 0 }, context: IResolverContext , info) => {
             postId = parseInt(postId)
-            return db.Comment
+            return context.db.Comment
                      .findAll({
                          where: { post: postId },
                          limit: first,
-                         offset: offset
+                         offset: offset,
+                         attributes: context.requestedFields.getFields(info)
                      })
                      .catch(handleError)
         }
