@@ -4,12 +4,19 @@ import db from './models'
 import { extractJwtMiddleware } from './middlewares/extractJwtMiddleware'
 
 import schema from './graphql/schema'
+import { DataLoaderFactory } from './graphql/dataloaders/DataLoaderFactory';
 
 class App {
     public express: express.Application
+    private dataLoaderFactory: DataLoaderFactory
 
     constructor () {
         this.express = express()
+        this.init()
+    }
+
+    private init(): void {
+        this.dataLoaderFactory = new DataLoaderFactory(db)
         this.middleware()
     }
 
@@ -20,7 +27,8 @@ class App {
             extractJwtMiddleware(),
 
             (req, res, next) => {
-                req['context'].db = db
+                req['context']['db'] = db
+                req['context']['dataloaders'] = this.dataLoaderFactory.getLoaders()
                 next()
             },
 
