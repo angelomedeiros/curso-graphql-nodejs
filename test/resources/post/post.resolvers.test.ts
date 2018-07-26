@@ -128,6 +128,42 @@ describe('Post', () => {
 
                 });
 
+                it('post com id invalido', () => {
+
+                    let body = {
+                        query: `
+                            query getPost($id: ID!){
+                                post(id: $id) {
+                                    title
+                                    author {
+                                        name
+                                        email
+                                    }
+                                    comments {
+                                        comment
+                                    }
+                                }
+                            }
+                        `,
+                        variables: {
+                            id: -1
+                        }
+                    };
+
+                    return chai.request(app)
+                        .post('/graphql')
+                        .set('content-type', 'application/json')
+                        .send(JSON.stringify(body))
+                        .then(res => {
+                            const singlePost = res.body.data.post;
+                            expect(res.body.data.post).to.be.null;   
+                            expect(res.body.errors).to.be.an('array')
+                            expect(res.body).to.have.keys(['data', 'errors']);
+                            expect(res.body.errors[0].message).to.equal('Error: Post with id -1 not found!');                         
+                        }).catch(handleError);
+
+                });
+
             });
 
         });
