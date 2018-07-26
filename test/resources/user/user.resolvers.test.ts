@@ -196,7 +196,7 @@ describe('User', () => {
                             expect(res.body.data.user).to.be.null;
                             expect(res.body.errors).to.be.an('array');
                             expect(res.body).to.have.keys(['data', 'errors']);
-                            // expect(res.body.errors[0].message).to.equal('Error: User with id -1 not found!');
+                            expect(res.body.errors[0].message).to.equal('Error: User with id -1 not found');
                         }).catch(handleError);
 
                 });
@@ -426,7 +426,7 @@ describe('User', () => {
                         .set('content-type', 'application/json')
                         .send(JSON.stringify(body))
                         .then(res => {
-                            expect(res.body.errors[0].message).to.equal('Unauthorized! Token not provided!');
+                            expect(res.body.errors[0].message).to.equal('Não autorizado: Token não fornecido');
                         }).catch(handleError);
 
                 });
