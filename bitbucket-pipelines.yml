@@ -8,6 +8,7 @@ pipelines:
         caches:
           - node
         script:
+          - --default-authentication-plugin=mysql_native_password
           - npm install
           - npm run pipelines
         services:
@@ -17,8 +18,6 @@ definitions:
   services:
     mysql:
       image: mysql
-      script:
-        - --default-authentication-plugin=mysql_native_password
       environment:
         MYSQL_DATABASE: 'pipelines'
         MYSQL_ROOT_PASSWORD: 'let_me_in'
