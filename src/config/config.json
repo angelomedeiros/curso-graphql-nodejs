@@ -25,11 +25,11 @@
   },
   "production": {
     "username": "root",
-    "password": "let_me_in",
-    "database": "database_production",
+    "password": "11111111",
+    "database": "graphql_blog_production",
     "host": "127.0.0.1",
     "port": 3306,
     "dialect": "mysql",
-    "logging": false
+    "logging": true
   }
 }
