@@ -5,7 +5,7 @@
     "outDir": "dist",
     "lib": [
       "esnext"
-    ],
+    ]
   },
   "compileOnSave": false,
   "include": [
