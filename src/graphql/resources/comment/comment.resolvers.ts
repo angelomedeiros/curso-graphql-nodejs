@@ -24,18 +24,18 @@ export const commentResolvers = {
     },
 
     Query: {
-        commentsByPost: (parent, { postId, first = 10, offset = 0 }, context: IResolverContext , info) => {
+        commentsByPost: compose()((parent, { postId, first = 10, offset = 0 }, context: IResolverContext , info) => {
             postId = parseInt(postId)
             return context.db.Comment
                      .findAll({
                          where: { post: postId },
                          limit: first,
                          offset: offset,
-                         attributes: context.requestedFields.getFields(info)
+                         attributes: context.requestedFields.getFields(info, {keep: undefined})
                      })
                      .catch(handleError)
         }
-    },
+    )},
 
     Mutation: {
         createComment: compose(...authResolvers)((parent, { input }, {db, authUser}: {db: IDbConnection, authUser: IAuthUser} , info) => {
