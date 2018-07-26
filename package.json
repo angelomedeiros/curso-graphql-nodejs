@@ -9,7 +9,8 @@
     "coverage": "nyc --extension .ts --include 'src/**/*.ts' --reporter html npm test",
     "clusters": "NODE_ENV=development port=8080 node dist/clusters",
     "build": "npm run gulp build",
-    "start": "npm run build && npm run clusters"
+    "start": "npm run build && npm run clusters",
+    "pipelines": "NODE_ENV=pipelines JWT_SECRET=jwt_pipelines mocha"
   },
   "repository": {
     "type": "git",
