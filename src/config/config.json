@@ -16,16 +16,17 @@
   },
   "pipelines": {
     "username": "root",
-    "password": "Bo-9-Ps-8-Nm-7",
-    "database": "graphql_blog_test",
+    "password": "let_me_in",
+    "database": "pipelines",
     "host": "127.0.0.1",
+    "port": 3306,
     "dialect": "mysql",
     "logging": false
   },
   "production": {
     "username": "root",
     "password": "let_me_in",
-    "database": "pipelines",
+    "database": "database_production",
     "host": "127.0.0.1",
     "port": 3306,
     "dialect": "mysql",
